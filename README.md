@@ -25,4 +25,6 @@ highcut = 1200.0 # High cutoff frequency in Hz
 - signal drift, near by code, interference and lids etc
 - real time control of the filter with arrows
 
+Thanks to [OpenAI](https://www.openai.com) for their language model ChatGPT, which assisted in generating the QSO dataset.
+
 10May25
