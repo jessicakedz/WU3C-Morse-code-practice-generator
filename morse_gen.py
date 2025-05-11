@@ -12,7 +12,7 @@ from scipy.signal import lfilter
 os.system('cls')
 #============================================
 # load message from this file
-message_file='C:/data/message.txt'
+message_file='C:/data/CW practice/message.txt'
 #=====================================
 # code characteristics
 wpm=20
@@ -37,8 +37,9 @@ noise_amplitude=0.05
 # get text
 with open(message_file, 'r') as file:
     text = file.read()
+modified = text.replace('\n', '    ')  # 4 spaces
 allowed = set("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789./ ")
-message = ''.join(c for c in text if c.upper() in allowed)
+message = ''.join(c for c in modified if c.upper() in allowed)
 
 #============================================================
 # Design filter (second-order sections for stability)
@@ -146,7 +147,6 @@ chardict = {
     "0": np.array([1,1,1,1,1]),
     ".": np.array([0,1,0,1,0,1]),
     "/": np.array([1,0,0,1,0]),
-    "BK": np.array([1,0,0,0,1,0,1])
 }
 # "w"
 mc=np.array([0,1,1])
