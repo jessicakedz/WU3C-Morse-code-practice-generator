@@ -21,6 +21,8 @@ highcut = 1200.0 # High cutoff frequency in Hz
 ```
 
 # future things will be:
+- cut message up to generate wave in blocks vs one huge file
+- maybe export as a mp4 for use anywhere
 - copy check 
 - signal drift, near by code, interference and lids etc
 - real time control of the filter with arrows
