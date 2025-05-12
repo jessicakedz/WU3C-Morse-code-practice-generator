@@ -9,10 +9,12 @@ from scipy.signal.windows import tukey
 import random
 from scipy.signal import butter, sosfilt, sosfreqz
 from scipy.signal import lfilter
+import re
+
 os.system('cls')
 #============================================
 # load message from this file
-message_file='C:/data/CW practice/message.txt'
+message_file='C:/data/CW practice/ham_radio_qsos.txt'
 #=====================================
 # code characteristics
 wpm=20
@@ -34,13 +36,26 @@ sampling_rate = 44100
 order = 4       # Filter order
 noise_amplitude=0.05
 #============================================================
+
+def get_n_random_text_blocks(text, n):
+    # Split on any form of empty line: \n\n or \r\n\r\n
+    blocks = re.split(r'(?:\r\n|\n){2,}', text.strip())
+
+    if len(blocks) < n:
+        raise ValueError(f"Only {len(blocks)} blocks found; cannot select {n}.")
+
+    return random.sample(blocks, k=n)
+
 # get text
+print("loading file")
 with open(message_file, 'r') as file:
     text = file.read()
-modified = text.replace('\n', '    ')  # 4 spaces
-allowed = set("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789./ ")
-message = ''.join(c for c in modified if c.upper() in allowed)
 
+nqso=int(input("how many QSO's?"))
+blocks='\n\n'.join(get_n_random_text_blocks(text, nqso))
+modified = blocks.replace('\n', '    ')  # 4 spaces
+allowed = set("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789./? ")
+message = ''.join(c for c in modified if c.upper() in allowed)
 #============================================================
 # Design filter (second-order sections for stability)
 sos = butter(order, [lowcut, highcut], btype='band', fs=sampling_rate, output='sos')
@@ -147,6 +162,7 @@ chardict = {
     "0": np.array([1,1,1,1,1]),
     ".": np.array([0,1,0,1,0,1]),
     "/": np.array([1,0,0,1,0]),
+    "?": np.array([0,0,1,1,0,0]),    
 }
 # "w"
 mc=np.array([0,1,1])
